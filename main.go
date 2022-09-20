@@ -37,5 +37,6 @@ func main() {
 	r.GET("/wishes/:userId", user.FindWishes)
 	r.DELETE("/delete/wish", user.DeleteWish)
 	r.GET("/search", search.Search)
+	r.GET("/suggestions", search.Suggestions)
 	r.Run()
 }
