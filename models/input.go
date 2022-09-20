@@ -33,3 +33,8 @@ type ListInput struct {
 type SearchInput struct {
 	Text string `json:"text" binding:"required"`
 }
+
+type AuthInput struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}

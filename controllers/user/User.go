@@ -66,3 +66,17 @@ func AddRole(c *gin.Context) {
 	models.DB.Model(&user).Updates(user)
 
 }
+
+func Login(c *gin.Context) {
+	var input models.AuthInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	var user models.User
+	if err := models.DB.Where("username=?", input.Username).First(&user).Error; err != nil || user.Password != input.Password {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid credentials!"})
+		return
+	}
+	c.JSON(http.StatusAccepted, gin.H{"result": "Login Sucessful!"})
+}
