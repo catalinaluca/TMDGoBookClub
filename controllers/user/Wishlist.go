@@ -40,6 +40,10 @@ type Result struct {
 	Title     string
 	Author    string
 }
+type Wishlist struct {
+	BookId uint
+	UserId uint
+}
 
 func FindWishes(c *gin.Context) {
 	var result []Result
@@ -49,4 +53,22 @@ func FindWishes(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"result:": result})
+}
+
+func DeleteWish(c *gin.Context) {
+	var input models.ListInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var result []Wishlist
+	if err := models.DB.Raw("SELECT * FROM wishlist where user_id=? and book_id=?", input.UserId, input.BookId).Scan(&result).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User or book not on the waitlist!"})
+		return
+	}
+
+	models.DB.Exec("DELETE FROM wishlist WHERE user_id=? and book_id=?", input.UserId, input.BookId)
+	c.JSON(http.StatusOK, gin.H{"data": true})
+
 }

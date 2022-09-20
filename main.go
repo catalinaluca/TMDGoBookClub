@@ -34,5 +34,6 @@ func main() {
 	r.GET("/owned/books/:ownerId", book.OwnedBooks)
 	r.PUT("/add/wish", user.AddWish)
 	r.GET("/wishes/:userId", user.FindWishes)
+	r.DELETE("/delete/wish", user.DeleteWish)
 	r.Run()
 }

@@ -7,6 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Waitlist struct {
+	BookId uint
+	UserId uint
+}
+
 func AddWaiter(c *gin.Context) {
 	var input models.ListInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -42,17 +47,12 @@ func DeleteWaiter(c *gin.Context) {
 		return
 	}
 
-	var user models.ListInput
-	if err := models.DB.Raw("SELECT * FROM waitlist where user_id=?", input.UserId).Scan(&user).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found!"})
+	var result []Waitlist
+	if err := models.DB.Raw("SELECT * FROM waitlist where user_id=? and book_id=?", input.UserId, input.BookId).Scan(&result).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User or book not on the waitlist!"})
 		return
 	}
 
-	var book models.Book
-	if err := models.DB.Where("id = ?", input.BookId).First(&book).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Book not found!"})
-		return
-	}
-	models.DB.Exec("DELETE FROM waitlist WHERE user_id=?", user.UserId)
+	models.DB.Exec("DELETE FROM waitlist WHERE user_id=? and book_id=?", input.UserId, input.BookId)
 	c.JSON(http.StatusOK, gin.H{"data": true})
 }
