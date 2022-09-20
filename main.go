@@ -2,6 +2,7 @@ package main
 
 import (
 	book "gobookclub/controllers/book"
+	"gobookclub/controllers/search"
 	user "gobookclub/controllers/user"
 	"gobookclub/models"
 
@@ -35,5 +36,6 @@ func main() {
 	r.PUT("/add/wish", user.AddWish)
 	r.GET("/wishes/:userId", user.FindWishes)
 	r.DELETE("/delete/wish", user.DeleteWish)
+	r.GET("/search", search.Search)
 	r.Run()
 }

@@ -29,3 +29,7 @@ type ListInput struct {
 	BookId uint `json:"bookId" binding:"required"`
 	UserId uint `json:"userId" binding:"required"`
 }
+
+type SearchInput struct {
+	Text string `json:"text" binding:"required"`
+}
