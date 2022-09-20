@@ -21,6 +21,7 @@ func main() {
 	r.PUT("/book/:id", book.UpdateBook)
 	r.DELETE("/book/:id", book.DeleteBook)
 	r.PUT("/add/waiter", book.AddWaiter)
+	r.DELETE("/delete/waiter", book.DeleteWaiter)
 	r.GET("/users", user.FindUsers)
 	r.GET("/user/:id", user.FindUser)
 	r.POST("/user", user.CreateUser)
