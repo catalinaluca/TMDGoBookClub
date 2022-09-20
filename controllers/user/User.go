@@ -66,26 +66,3 @@ func AddRole(c *gin.Context) {
 	models.DB.Model(&user).Updates(user)
 
 }
-func AddWish(c *gin.Context) {
-	var input models.ListInput
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	var user models.User
-	if err := models.DB.Where("id = ?", input.UserId).First(&user).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found!"})
-		return
-	}
-
-	var book models.Book
-	if err := models.DB.Where("id = ?", input.BookId).First(&book).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Book not found!"})
-		return
-	}
-	user.Wishlist = append(user.Wishlist, book)
-	models.DB.Model(&user).Updates(user)
-
-	c.JSON(http.StatusOK, gin.H{"data": book})
-}

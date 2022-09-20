@@ -33,5 +33,6 @@ func main() {
 	r.PUT("/extend/renting", book.ExtendRentingPeriod)
 	r.GET("/owned/books/:ownerId", book.OwnedBooks)
 	r.PUT("/add/wish", user.AddWish)
+	r.GET("/wishes/:userId", user.FindWishes)
 	r.Run()
 }
